@@ -2,22 +2,22 @@ import Head from 'next/head';
 import '../styles/globals.css';
 
 //Web3 auth
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { Chain, createClient, configureChains, WagmiConfig } from 'wagmi';
 import { AppProvider } from '../sections/utils/appContext';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { SessionProvider } from 'next-auth/react';
 import { MoralisProvider } from 'react-moralis';
 import '@rainbow-me/rainbowkit/styles.css';
 import Header from '../sections/Header/Header';
 import Loading from '../components/Loading';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {darkTheme} from '../themes/theme'
 
 const Container = styled.div`
-  color: white;
-  background: #141414;
+  color: ${(props) => props.theme.colors.font};
+  background: ${(props) => props.theme.colors.body};
   font-family: Inter, sans-serif !important;
 `;
 
@@ -93,14 +93,15 @@ const queryClient = new QueryClient();
 export default function MyApp({ Component, pageProps }: AppProps) {
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
+  //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
 
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
+      <ThemeProvider theme={darkTheme}>
         <Container>
           <WagmiConfig client={client}>
             <MoralisProvider appId={appId} serverUrl={serverUrl}>
-              <SessionProvider session={pageProps.session} refetchInterval={10000}>
                 <RainbowKitProvider chains={chains}>
                   <Head>
                     <meta charSet="utf-8" />
@@ -122,10 +123,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     </Loading>
                   </AppProvider>
                 </RainbowKitProvider>
-              </SessionProvider>
             </MoralisProvider>
           </WagmiConfig>
         </Container>
+        </ThemeProvider>
       </Hydrate>
     </QueryClientProvider>
   );

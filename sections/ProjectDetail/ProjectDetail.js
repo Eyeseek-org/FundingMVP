@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount, useNetwork } from 'wagmi';
+import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi';
 
 import Tag from '../../components/typography/Tag';
 import ErrText from '../../components/typography/ErrText';
@@ -14,7 +14,7 @@ import donation from '../../abi/donation.json';
 import ProjectDetailRight from './ProjectDetailRight';
 import ProjectDescription from './ProjectDescription';
 import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing';
-import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import polygon from '../../public/icons/donate/polygon.png';
 import bnb from '../../public/icons/donate/bnb.png';
@@ -30,7 +30,7 @@ const DetailBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.25);
+  background: ${(props) => props.theme.colors.transparent};
   border: 1px solid #2f2f2f;
   padding: 3%;
   padding-left: 5%;
@@ -314,7 +314,7 @@ const ProjectDetail = ({
         </LeftPart>
         {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add} chainId={chainId}/> }
       </DetailBox>
-      <ProjectDescription descM={descM} />
+      {pType !== 'Stream' && <ProjectDescription descM={descM} pid={pid} add={add} chainId={chainId}/>}
     </Container>
     </>
 };

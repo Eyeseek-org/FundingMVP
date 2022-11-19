@@ -19,7 +19,7 @@ const Container = styled.div`
 const Circle = styled(motion.div)`
     height: 12px;
     width: 12px;
-    background: white;
+    background: ${(props) => props.theme.colors.font};
     box-shadow: 0px 2px 15px white, inset 0px 1px 3px white;
     border-radius: 45px;
     &:hover {
@@ -44,7 +44,7 @@ const MileTitle = styled(motion.div)`
     text-align: left;
     letter-spacing: 0.8px;
     font-size: 1.3em;
-    color: #B0F6FF;
+    color: ${(props) => props.theme.colors.primary};
     margin-bottom: 2%;
 `
 
@@ -56,7 +56,7 @@ const Line = styled(motion.div)`
     position: absolute;
     height: 100px;
     width: 2px;
-    background: white;
+    background: ${(props) => props.theme.colors.font};
     left: 5px;
 `
 
@@ -77,68 +77,33 @@ const Date = styled.div`
     font-family: 'Neucha';
     top: -30px;
     width: 100px;
-    color: #5E82DF;
+    color: ${(props) => props.theme.colors.secondary};
     font-weight: 500;
     font-size: 1.2em;
 `
-const dummy = [
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-},
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-},
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-},
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-}
 
-]
+const Timeline = ({milestones}) => {
+    
 
-const Timeline = () => {
-    const [milestones, setMilestones] = useState(dummy)
-
-    const handleClick = (e) => {
-        console.log('Clicked')
-    }
-
-    const Mil = ({date, title}) => {
+    const Mil = ({date, title, url}) => {
         const [show, setShow] = useState(false)
         return <>
                 <O>
+                    <a href={url} rel="noopener noreferrer" target="_blank" >
                   <Circle 
                     whileHover={{ scale: 2 }}  
                     transition={{ type: "spring", stiffness: 500, damping: 3 }} 
                     onHoverStart={() => setShow(true)}
                     onHoverEnd={() => setShow(false)}
-                    onClick={() => handleClick()}
                     
-                    /> 
+                    /> </a>
                   {show && 
                     <Line
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1}}
                         transition={{ duration: 1.1 }}
                     />}
-                  <Date>{date}</Date>
+                  <Date>{date.substring(0,10)}</Date>
                   {show &&    <Milestone>
                     <MileTitle
                         initial={{ opacity: 0, x: -100 }}
@@ -153,11 +118,12 @@ const Timeline = () => {
     return <>
     <Container>
         <TimeBox>
-            {milestones.map((mil, index) => {
+            {milestones && milestones.map((mil) => {
                             return <Mil
-                                key={index}
-                                date={mil.date}
+                                key={mil.objectId}
+                                date={mil.createdAt}
                                 title={mil.title}
+                                url={mil.url}
                             />
                         })}
         </TimeBox>

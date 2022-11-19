@@ -20,15 +20,16 @@ const BalanceComponent = ({ token, address }) => {
   }, []);
 
   const { data } = useBalance({
-    addressOrName: address,
+    address: address,
     token: token,
     chainId: ch,
   });
 
+  ///TBD multiply with decimals
+
   return (
     <Container>
       <>
-        Balance:
         <Amount value={data?.formatted} /> {data?.symbol}
       </>
     </Container>

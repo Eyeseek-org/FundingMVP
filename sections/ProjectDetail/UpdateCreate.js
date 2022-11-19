@@ -4,12 +4,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import InputContainer from '../../components/form/InputContainer';
-import { NextButton } from '../start_project/Category/StyleWrapper';
+import { NextButton } from '../start_project/Styles';
 import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers';
 import { HTTPS_URL_REGEX } from '../../util/regex';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import { useMutation } from '@tanstack/react-query';
 import { DapAPIService } from '../../services/DapAPIService';
+import Subtitle from '../../components/typography/Subtitle';
 
 const Description = styled.div`
   font-size: 1em;
@@ -17,7 +18,7 @@ const Description = styled.div`
   margin-bottom: 2%;
   letter-spacing: 0.2px;
   line-height: 1.5em;
-  background: rgba(0, 0, 0, 0.08);
+  background: ${(props) => props.theme.colors.invisible};
   border-top: 1px solid rgba(176, 246, 255, 0.4);
   padding-top: 0.5%;
 `;
@@ -84,6 +85,7 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
       <RewardContainer>
         <MainMilestoneContainer>
           <MilestoneContainer>
+             <Subtitle text="Create new update" />
             <Description>
               Notify backers and stakeholders about your project updates, rewards and followups. Insert reference to the project page or
               socials where your progress is described in more detail
